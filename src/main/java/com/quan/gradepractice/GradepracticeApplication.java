@@ -7,15 +7,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.quan.gradepractice.Entity.AppUser;
 import com.quan.gradepractice.Entity.Course;
 import com.quan.gradepractice.Entity.Enrolment;
 import com.quan.gradepractice.Entity.Grade;
+import com.quan.gradepractice.Entity.Role;
+import com.quan.gradepractice.Entity.RoleType;
 import com.quan.gradepractice.Entity.Student;
 import com.quan.gradepractice.Entity.StudentIdCard;
+import com.quan.gradepractice.Repository.AppUserRepository;
 import com.quan.gradepractice.Repository.CourseRepo;
 import com.quan.gradepractice.Repository.EnrolmentRepo;
-import com.quan.gradepractice.Repository.GradeRepo;
 import com.quan.gradepractice.Repository.StudentRepo;
 
 @SpringBootApplication
@@ -26,7 +30,7 @@ public class GradepracticeApplication {
 	}
 
 	@Bean
-	CommandLineRunner commandLineRunner(StudentRepo studentRepo, CourseRepo courseRepo, EnrolmentRepo enrolmentRepo) {
+	CommandLineRunner commandLineRunner(StudentRepo studentRepo, CourseRepo courseRepo, EnrolmentRepo enrolmentRepo, AppUserRepository appUserRepository) {
 		return args -> {
 			Student quan = new Student("quan", "quandoan@gmail.com", LocalDate.of(1996, 8, 19));
 			Course programming1 = new Course("programming1", "12345fc" , "ICT");
@@ -60,8 +64,22 @@ public class GradepracticeApplication {
 			quan.removeStudentIdCardToStudent();
 			studentRepo.save(quan);
 			
+			AppUser admin = new AppUser("quan_admin", "123456");
+			admin.getRoles().add(new Role(RoleType.ROLE_ADMIN));
+			
+			appUserRepository.save(admin);
+
+			AppUser khanhHeo = new AppUser("khanh1", "123456");
+			
+			khanhHeo.getRoles().add(new Role(RoleType.ROLE_USER));
+			appUserRepository.save(khanhHeo);
 			
 		};
+	}
+
+	@Bean
+	BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 
 }

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.quan.gradepractice.Entity.Course;
 import com.quan.gradepractice.Entity.Grade;
 import com.quan.gradepractice.Entity.Student;
-import com.quan.gradepractice.Exception.NotFoundException;
+import com.quan.gradepractice.Exception.EntityNotFoundException;
 import com.quan.gradepractice.Repository.CourseRepo;
 import com.quan.gradepractice.Repository.GradeRepo;
 import com.quan.gradepractice.Repository.StudentRepo;
@@ -34,17 +34,17 @@ public class GradeServiceImp implements GradeService {
     public Grade saveGrade(Long studentId, Long courseId, int score) {
         Optional<Grade> gradeEntity = gradeRepo.findByStudentIdAndCourseId(studentId, courseId);
         if(gradeEntity.isPresent()) {
-            throw new NotFoundException("the grade with student id " + studentId + " and course id " + courseId + " is already exist");
+            throw new EntityNotFoundException("the grade with student id " + studentId + " and course id " + courseId + " is already exist");
         }
 
         Optional<Student> entityS = studentRepo.findById(studentId);
         if(!entityS.isPresent()) {
-            throw new NotFoundException("the grade with student id " + studentId + " not found"); 
+            throw new EntityNotFoundException("the grade with student id " + studentId + " not found"); 
         }
         Student student = entityS.get();
         Optional<Course> courseS = courseRepo.findById(courseId);
         if(!courseS.isPresent()) {
-            throw new NotFoundException("the grade with course id " + courseId + " not found"); 
+            throw new EntityNotFoundException("the grade with course id " + courseId + " not found"); 
         }
         Course course = courseS.get();
         Grade grade = new Grade(score, student, course);
@@ -56,7 +56,7 @@ public class GradeServiceImp implements GradeService {
       public List<Grade> getGradesByStudentId(Long studentId) {
         Optional<Student> entity = studentRepo.findById(studentId);
         if(!entity.isPresent()) {
-            throw new NotFoundException("the grades with student id " + studentId + " not found");
+            throw new EntityNotFoundException("the grades with student id " + studentId + " not found");
         }
         return gradeRepo.findByStudentId(studentId);
     }
@@ -64,7 +64,7 @@ public class GradeServiceImp implements GradeService {
     public List<Grade> getGradesByCourseId(Long courseId) {
         Optional<Course> entity = courseRepo.findById(courseId);
         if(!entity.isPresent()) {
-            throw new NotFoundException("the grades with student id " + courseId + " not found");
+            throw new EntityNotFoundException("the grades with student id " + courseId + " not found");
         }
         return gradeRepo.findByCourseId(courseId);
     }
@@ -74,7 +74,7 @@ public class GradeServiceImp implements GradeService {
         if(entity.isPresent()) {
             return entity.get();
         }
-        throw new NotFoundException("the grade with the student id " + studentId + " and course id " + courseId + " not found the database");
+        throw new EntityNotFoundException("the grade with the student id " + studentId + " and course id " + courseId + " not found the database");
     }
 
     @Transactional
@@ -87,7 +87,7 @@ public class GradeServiceImp implements GradeService {
     public void deleteGrade(Long studentId, Long courseId) {
         Optional<Grade> entity = gradeRepo.findByStudentIdAndCourseId(studentId, courseId);
         if(!entity.isPresent()) {
-            throw new NotFoundException("the grade with the student id " + studentId + " and course id " + courseId + " not found the database");
+            throw new EntityNotFoundException("the grade with the student id " + studentId + " and course id " + courseId + " not found the database");
         }
         gradeRepo.deleteByStudentIdAndCourseId(studentId, courseId);
     }

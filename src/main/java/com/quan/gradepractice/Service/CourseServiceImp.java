@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.quan.gradepractice.Entity.Course;
-import com.quan.gradepractice.Exception.NotFoundException;
+import com.quan.gradepractice.Exception.EntityNotFoundException;
 import com.quan.gradepractice.Repository.CourseRepo;
 import com.quan.gradepractice.Repository.StudentRepo;
 
@@ -32,13 +32,13 @@ public class CourseServiceImp  implements CourseService{
         if(entity.isPresent()) {
             return entity.get();
         }
-        throw new NotFoundException("the course id " + id + " not found");
+        throw new EntityNotFoundException("the course id " + id + " not found");
     }
 
     public Course saveCourse(Course course) {
         Optional<Course> entity = courseRepo.checkCourse(course.getName(), course.getCourseCode(), course.getDepartment());
         if(entity.isPresent()) {
-            throw new NotFoundException("the course is already exist, cannot add this one to the database");
+            throw new EntityNotFoundException("the course is already exist, cannot add this one to the database");
         }
         return courseRepo.save(course);
     }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.quan.gradepractice.Entity.Student;
-import com.quan.gradepractice.Exception.NotFoundException;
+import com.quan.gradepractice.Exception.EntityNotFoundException;
 import com.quan.gradepractice.Repository.StudentRepo;
 
 @Service
@@ -56,7 +56,7 @@ public class StudentServiceImp implements StudentService{
         if(entity.isPresent()) {
             return entity.get();
         }
-        throw new NotFoundException("The student id + " + id +" not found in the database");
+        throw new EntityNotFoundException("The student id + " + id +" not found in the database");
     }
     
     

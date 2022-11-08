@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.fasterxml.jackson.annotation.JacksonInject.Value;
 import com.quan.gradepractice.Exception.ErrorResponse;
-import com.quan.gradepractice.Exception.NotFoundException;
+import com.quan.gradepractice.Exception.EntityNotFoundException;
 
 @ControllerAdvice
 public class ApiHandlingException {
     
-    @ExceptionHandler(value = NotFoundException.class) 
-    public ResponseEntity<Object> handleApiException(NotFoundException notFoundException) {
+    @ExceptionHandler(value = EntityNotFoundException.class) 
+    public ResponseEntity<Object> handleApiException(EntityNotFoundException notFoundException) {
         ErrorResponse err = new ErrorResponse(notFoundException.getMessage(), LocalDateTime.now(), notFoundException);
         return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
     }
