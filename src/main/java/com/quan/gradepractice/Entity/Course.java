@@ -8,7 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.quan.gradepractice.Exception.NotFoundException;
+import com.quan.gradepractice.Exception.EntityNotFoundException;
 
 import lombok.*;
 
@@ -77,7 +77,7 @@ public class Course {
             grade.setCourse(this);
             
         } else {
-            throw new NotFoundException("the grade id " + grade.getId() + " is exist already");
+            throw new EntityNotFoundException("the grade id " + grade.getId() + " is exist already");
         }
         
     }
@@ -86,7 +86,7 @@ public class Course {
             this.grades.remove(grade);
             grade.setCourse(null);
         } else {
-            throw new NotFoundException("the grade id " + grade.getId() + " not found");
+            throw new EntityNotFoundException("the grade id " + grade.getId() + " not found");
         }
         
     }
@@ -96,7 +96,7 @@ public class Course {
             enrolment.setCourse(this);
             enrolment.getStudent().getEnrolments().add(enrolment);
         } else {
-            throw new NotFoundException("the enrolment id " + enrolment.getId() + " is already exist");
+            throw new EntityNotFoundException("the enrolment id " + enrolment.getId() + " is already exist");
         }
       
     }
@@ -106,7 +106,7 @@ public class Course {
             enrolment.getStudent().getEnrolments().remove(enrolment);
             enrolment.setCourse(null);
         } else {
-            throw new NotFoundException("the enrolment id " + enrolment.getId() + " not found");
+            throw new EntityNotFoundException("the enrolment id " + enrolment.getId() + " not found");
         }
       
     }

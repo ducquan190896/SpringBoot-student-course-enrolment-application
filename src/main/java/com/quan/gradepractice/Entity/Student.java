@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.quan.gradepractice.Exception.NotFoundException;
+import com.quan.gradepractice.Exception.EntityNotFoundException;
 import com.quan.gradepractice.Repository.CourseRepo;
 import com.quan.gradepractice.Repository.EnrolmentRepo;
 
@@ -105,7 +105,7 @@ public class Student {
             this.grades.add(grade);
             grade.setStudent(this);
         } else {
-            throw new NotFoundException("the grade id " + grade.getId() + " is exist already");
+            throw new EntityNotFoundException("the grade id " + grade.getId() + " is exist already");
         }
         
     }
@@ -115,7 +115,7 @@ public class Student {
             enrolment.setStudent(this);
             enrolment.getCourse().getEnrolments().add(enrolment);
         } else {
-            throw new NotFoundException("the enrolment id " + enrolment.getId() + " is already exist");
+            throw new EntityNotFoundException("the enrolment id " + enrolment.getId() + " is already exist");
         }
         
    }
@@ -127,7 +127,7 @@ public class Student {
            
             
         } else {
-            throw new NotFoundException("the enrolment id " + enrolment.getId() + " not found");
+            throw new EntityNotFoundException("the enrolment id " + enrolment.getId() + " not found");
         }
     
    }
@@ -137,7 +137,7 @@ public class Student {
         this.studentIdCard = studentIdCard;
         studentIdCard.setStudent(this);
     } else {
-        throw new NotFoundException("this student id already has a student card, cannot add anymore");
+        throw new EntityNotFoundException("this student id already has a student card, cannot add anymore");
     }
        
    }
@@ -146,7 +146,7 @@ public class Student {
         this.studentIdCard = null;
         
     } else {
-        throw new NotFoundException("this student id has no student card, cannot remove it");
+        throw new EntityNotFoundException("this student id has no student card, cannot remove it");
     }
        
    }
